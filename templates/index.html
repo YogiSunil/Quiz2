@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Character Info</title>
+     <link rel="icon" href="{{ url_for('static', filename='logo.ico') }}" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .result {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .result h2 {
+            color: #333;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .result p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .result ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .result ul li {
+            background-color: #e3f2fd;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            color: #333;
+        }
+
+        .result p strong {
+            color: #007bff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Star Wars Logo" width="100" height="100">
+        <h1>Star Wars Character Information</h1>
+        
+        <form method="POST">
+            <label for="character_id">Enter Character ID:</label>
+            <input type="number" id="character_id" name="character_id" required>
+            <button type="submit">Get Character</button>
+        </form>
+
+        {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+        {% elif character_data %}
+            <div class="result">
+                <h2>{{ character_data['name'] }}</h2>
+                <p><strong>Height:</strong> {{ character_data['height'] }} cm</p>
+                <p><strong>Mass:</strong> {{ character_data['mass'] }} kg</p>
+                <p><strong>Hair Color:</strong> {{ character_data['hair_color'] }}</p>
+                <p><strong>Eye Color:</strong> {{ character_data['eye_color'] }}</p>
+                <p><strong>Homeworld:</strong> {{ character_data['homeworld'] }}</p>
+                <h3>Films:</h3>
+                <ul>
+                    {% for film in character_data['films'] %}
+                        <li>{{ film }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
